@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'dev.retrotv'
+version '0.0.1-alpha'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.retrotv-maven-repo:cryptography:0.0.2-alpha'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
