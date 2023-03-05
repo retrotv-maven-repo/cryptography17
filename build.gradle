@@ -6,6 +6,11 @@ plugins {
 group 'dev.retrotv'
 version '0.0.2-alpha'
 
+// Github Action 버전 출력용
+tasks.register('printVersionName') {
+    println project.version
+}
+
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
