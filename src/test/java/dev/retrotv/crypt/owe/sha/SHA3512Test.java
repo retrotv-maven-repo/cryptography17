@@ -1,9 +1,10 @@
-package dev.retrotv.crypt.sha;
+package dev.retrotv.crypt.owe.sha;
 
 import dev.retrotv.crypt.BaseEncode;
 import dev.retrotv.crypt.OneWayEncryption;
 import dev.retrotv.crypt.random.RandomValue;
 import dev.retrotv.crypt.random.SecurityStrength;
+import dev.retrotv.crypt.sha.SHA3512;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 
