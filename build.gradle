@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+    id 'java-library'
 }
 
 group 'dev.retrotv'
-version '0.0.1-alpha'
+version '0.0.2-alpha'
 
 repositories {
     mavenCentral()
@@ -11,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.retrotv-maven-repo:cryptography:0.0.9-alpha'
+    api 'com.github.retrotv-maven-repo:cryptography:0.0.9-alpha'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
