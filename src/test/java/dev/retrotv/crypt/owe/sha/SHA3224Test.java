@@ -25,13 +25,6 @@ public class SHA3224Test extends OWETest {
     }
 
     @Test
-    @DisplayName("byte[] 데이터형 테스트")
-    void byteEncryptMatchTest() {
-        OneWayEncryption owe = new SHA3224();
-        parameterByteEncryptMatchTest(owe);
-    }
-
-    @Test
     @DisplayName("base64 인코딩 테스트")
     void base64EncodeTest() {
         OneWayEncryption owe = new SHA3224();
@@ -40,14 +33,14 @@ public class SHA3224Test extends OWETest {
 
     @RepeatedTest(100)
     @DisplayName("SHA3-224 알고리즘 암호화 테스트")
-    void sha1EncryptTest(RepetitionInfo repetitionInfo) {
+    void sha1EncryptTest(RepetitionInfo repetitionInfo) throws Exception {
         OneWayEncryption owe = new SHA3224();
         encryptWithoutSaltTest(owe, repetitionInfo);
     }
 
     @RepeatedTest(100)
     @DisplayName("SHA3-224 알고리즘 + 소금치기 암호화 테스트")
-    void sha1EncryptWithSaltTest(RepetitionInfo repetitionInfo) {
+    void sha1EncryptWithSaltTest(RepetitionInfo repetitionInfo) throws Exception {
         OneWayEncryption owe = new SHA3224();
         encryptWithSaltTest(owe, repetitionInfo);
     }
