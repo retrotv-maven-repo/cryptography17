@@ -2,12 +2,12 @@ package dev.retrotv.crypt.sha;
 
 import dev.retrotv.crypt.Algorithm;
 import dev.retrotv.crypt.OneWayEncryption;
-import dev.retrotv.crypt.owe.Encode;
+import dev.retrotv.crypt.owe.Encrypt;
 
-public class SHA3384 extends Encode implements OneWayEncryption {
+public class SHA3384 extends Encrypt implements OneWayEncryption {
 
     @Override
     public byte[] encrypt(byte[] data) {
-        return encode(Algorithm.SHA3384, data);
+        return encrypt(Algorithm.SHA3384, data);
     }
 }
