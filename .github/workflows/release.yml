@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: 버전 정보 추출
-      - run: chmod +x ${{github.workspace}}/gradlew
+        run: chmod +x ${{github.workspace}}/gradlew
       - run: echo "VERSION_INFORMATION=$(${{github.workspace}}/gradlew -q printVersionName)" >> $GITHUB_ENV
         id: extract_version_name
       - name: Release 생성
