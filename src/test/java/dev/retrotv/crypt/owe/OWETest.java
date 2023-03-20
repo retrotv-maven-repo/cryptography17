@@ -1,102 +1,143 @@
 package dev.retrotv.crypt.owe;
 
 import dev.retrotv.common.Log;
-import dev.retrotv.crypt.Encode;
-import dev.retrotv.crypt.EncodeFormat;
-import dev.retrotv.crypt.OneWayEncryption;
-import dev.retrotv.crypt.exception.CryptFailException;
-import dev.retrotv.crypt.random.RandomValue;
-import dev.retrotv.crypt.random.SecurityStrength;
-import org.junit.jupiter.api.RepetitionInfo;
+import dev.retrotv.crypt.Algorithm;
+import dev.retrotv.crypt.sha.*;
+import org.json.JSONObject;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OWETest extends Log {
-    protected static final Set<String> encryptedData = new HashSet<>();
+    protected final String PASSWORD = "The quick brown fox jumps over the lazy dog";
+    protected  final URL CHECKSUM = this.getClass().getClassLoader().getResource("checksum");
+    protected final URL RESOURCE = this.getClass().getClassLoader().getResource("checksum_test_file.txt");
+    protected final URL RESOURCE2 = this.getClass().getClassLoader().getResource("checksum_test_file2.txt");
 
-    protected void parameterDataIsNullTest(OneWayEncryption owe) {
-        Throwable exception = assertThrows(CryptFailException.class, () -> owe.encrypt((byte[]) null));
+    protected void fileHashTest(Algorithm algorithm) throws IOException {
+        File file;
+        byte[] fileData;
 
-        log.info("예외 메시지: " + exception.getMessage());
-        assertEquals("암호화 할 문자열 및 데이터는 null 일 수 없습니다.", exception.getMessage());
+        try {
+            file = new File(Objects.requireNonNull(RESOURCE).toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (DataInputStream dis = new DataInputStream(Files.newInputStream(file.toPath()))) {
+            fileData = new byte[(int) file.length()];
+            dis.readFully(fileData);
+        } catch (IOException e) {
+            throw new IOException("파일을 읽어들이는 과정에서 예상치 못한 오류가 발생했습니다.");
+        }
+
+        assertEquals(getHash(algorithm), hash(algorithm, fileData));
     }
 
-    protected void parameterTextIsNullTest(OneWayEncryption owe) {
-        Throwable exception = assertThrows(CryptFailException.class, () -> owe.encrypt((String) null, EncodeFormat.HEX));
+    protected void fileHashMatchesTest(Checksum checksum, Algorithm algorithm) throws IOException {
+        File file;
+        byte[] fileData;
 
-        log.info("예외 메시지: " + exception.getMessage());
-        assertEquals("암호화 할 문자열 및 데이터는 null 일 수 없습니다.", exception.getMessage());
+        try {
+            file = new File(Objects.requireNonNull(RESOURCE).toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (DataInputStream dis = new DataInputStream(Files.newInputStream(file.toPath()))) {
+            fileData = new byte[(int) file.length()];
+            dis.readFully(fileData);
+        } catch (IOException e) {
+            throw new IOException("파일을 읽어들이는 과정에서 예상치 못한 오류가 발생했습니다.");
+        }
+
+        assertTrue(checksum.matches(fileData, getHash(algorithm)));
     }
 
-    protected void encryptedDataBase64EncodeTest(OneWayEncryption owe) {
-        String message = "The lazy dog jumps over the brown fox!";
-        String encryptedMessage = owe.encrypt(message, EncodeFormat.BASE64);
-
-        log.info("암호화 된 메시지: " + encryptedMessage);
-
-        assertTrue(owe.matches(message, EncodeFormat.BASE64, encryptedMessage));
-    }
-
-    protected void encryptWithoutSaltTest(OneWayEncryption owe, RepetitionInfo repetitionInfo) throws Exception {
-        log.info("암호화 알고리즘: " + owe.getClass().getSimpleName());
-
-        String message = "The lazy dog jumps over the brown fox!";
-        String encryptedMessage = owe.encrypt(message, EncodeFormat.HEX);
-
-        assertTrue(owe.matches(message, encryptedMessage));
-        assertTrue(owe.matches(message, EncodeFormat.HEX, encryptedMessage));
-        assertTrue(checkBitLength(owe.getClass().getSimpleName(), (Encode.hexToBinary(encryptedMessage).length * 8)));
-
-        encryptedData.add(encryptedMessage);
-        if(repetitionInfo.getCurrentRepetition() == repetitionInfo.getTotalRepetitions()) {
-            log.info("마지막 테스트");
-            log.info("총 테스트 횟수: " + repetitionInfo.getCurrentRepetition());
-            log.info("암호화 된 데이터 개수 : " + encryptedData.size());
-            if(encryptedData.size() != 1) { fail(); }
-
-            encryptedData.clear();
+    protected void fileMatchesTest(Checksum checksum) throws IOException {
+        if (RESOURCE != null && RESOURCE2 != null) {
+            assertTrue(checksum.matches(new File(RESOURCE.getFile()), new File(RESOURCE2.getFile())));
+        } else {
+            fail();
         }
     }
 
-    protected void encryptWithSaltTest(OneWayEncryption owe, RepetitionInfo repetitionInfo) throws Exception {
-        log.info("암호화 알고리즘: " + owe.getClass().getSimpleName());
+    protected void passwordEncryptAndMatchesTest(Password password) {
+        String encryptedPassword = password.encode(PASSWORD);
 
-        String message = "The lazy dog jumps over the brown fox!";
-        String salt = RandomValue.generate(SecurityStrength.HIGH, 20);
-        String encryptedMessage = owe.encrypt(message, salt, EncodeFormat.HEX);
+        log.info(encryptedPassword);
 
-        log.info("암호화 된 메시지: " + encryptedMessage);
-        log.info("암호화 된 메시지 bit 길이: " + (Encode.hexToBinary(encryptedMessage).length * 8));
+        assertNotEquals(PASSWORD, encryptedPassword);
+        assertTrue(password.matches(PASSWORD, encryptedPassword));
+    }
 
-        assertTrue(owe.matches(message, salt, encryptedMessage));
-        assertTrue(owe.matches(message, salt, EncodeFormat.HEX, encryptedMessage));
-        assertTrue(checkBitLength(owe.getClass().getSimpleName(), (Encode.hexToBinary(encryptedMessage).length * 8)));
+    private String hash(Algorithm algorithm, byte[] fileData) {
+        switch (algorithm) {
+            case SHA3224 -> {
+                Checksum checksum = new SHA3224();
+                return checksum.encode(fileData);
+            }
 
-        encryptedData.add(encryptedMessage);
-        if(repetitionInfo.getCurrentRepetition() == repetitionInfo.getTotalRepetitions()) {
-            log.info("마지막 테스트");
-            log.info("총 테스트 횟수: " + repetitionInfo.getCurrentRepetition());
-            log.info("암호화 된 데이터 개수 : " + encryptedData.size());
-            if(repetitionInfo.getTotalRepetitions() != encryptedData.size()) { fail(); }
+            case SHA3256 -> {
+                Checksum checksum = new SHA3256();
+                return checksum.encode(fileData);
+            }
 
-            encryptedData.clear();
+            case SHA3384 -> {
+                Checksum checksum = new SHA3384();
+                return checksum.encode(fileData);
+            }
+
+            case SHA3512 -> {
+                Checksum checksum = new SHA3512();
+                return checksum.encode(fileData);
+            }
+
+            default -> {
+                return null;
+            }
         }
     }
 
-    private boolean checkBitLength(String algorithm, int length) {
+    private String getHash(Algorithm algorithm) throws IOException {
+        JSONObject jsonObject = new JSONObject(readJson());
+        JSONObject file1 = jsonObject.getJSONObject("checksum_test_file");
+
         return switch (algorithm) {
-            case "CRC32" -> length == 32;
-            case "MD2", "MD5" -> length == 128;
-            case "SHA1" -> length == 160;
-            case "SHA224", "SHA512224", "SHA3224" -> length == 224;
-            case "SHA256", "SHA512256", "SHA3256" -> length == 256;
-            case "SHA384", "SHA3384" -> length == 384;
-            case "SHA512", "SHA3512" -> length == 512;
-            default -> false;
+            case SHA3224 -> file1.getString(Algorithm.SHA3224.label());
+            case SHA3256 -> file1.getString(Algorithm.SHA3256.label());
+            case SHA3384 -> file1.getString(Algorithm.SHA3384.label());
+            case SHA3512 -> file1.getString(Algorithm.SHA3512.label());
+            default -> null;
         };
+    }
 
+    private String readJson() throws IOException {
+        if (CHECKSUM == null) {
+            throw new IOException();
+        }
+
+        String json;
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(CHECKSUM.getFile()))) {
+            StringBuilder sb = new StringBuilder();
+            String line = reader.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append("\n");
+                line = reader.readLine();
+            }
+            json = sb.toString();
+        }
+
+        log.info(json);
+
+        return json;
     }
 }

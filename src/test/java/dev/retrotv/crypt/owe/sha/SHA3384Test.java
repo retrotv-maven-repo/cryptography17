@@ -1,47 +1,34 @@
 package dev.retrotv.crypt.owe.sha;
 
-import dev.retrotv.crypt.OneWayEncryption;
+import dev.retrotv.crypt.Algorithm;
 import dev.retrotv.crypt.owe.OWETest;
 import dev.retrotv.crypt.sha.SHA3384;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 
 public class SHA3384Test extends OWETest {
 
     @Test
-    @DisplayName("암호화 데이터 null 체크")
-    void dataNullCheck() {
-        OneWayEncryption owe = new SHA3384();
-        parameterDataIsNullTest(owe);
+    @DisplayName("SHA3384 File hash 테스트")
+    void fileHashTest() throws Exception {
+        fileHashTest(Algorithm.SHA3384);
     }
 
     @Test
-    @DisplayName("암호화 문자열 null 체크")
-    void textNullCheck() {
-        OneWayEncryption owe = new SHA3384();
-        parameterTextIsNullTest(owe);
+    @DisplayName("SHA3384 File hash matches 테스트")
+    void fileHashMatchesTest() throws Exception {
+        fileHashMatchesTest(new SHA3384(), Algorithm.SHA3384);
     }
 
     @Test
-    @DisplayName("base64 인코딩 테스트")
-    void base64EncodeTest() {
-        OneWayEncryption owe = new SHA3384();
-        encryptedDataBase64EncodeTest(owe);
+    @DisplayName("SHA3384 File and File matches 테스트")
+    void fileMatchesTest() throws Exception {
+        fileMatchesTest(new SHA3384());
     }
 
-    @RepeatedTest(100)
-    @DisplayName("SHA3-384 알고리즘 암호화 테스트")
-    void sha1EncryptTest(RepetitionInfo repetitionInfo) throws Exception {
-        OneWayEncryption owe = new SHA3384();
-        encryptWithoutSaltTest(owe, repetitionInfo);
-    }
-
-    @RepeatedTest(100)
-    @DisplayName("SHA3-384 알고리즘 + 소금치기 암호화 테스트")
-    void sha1EncryptWithSaltTest(RepetitionInfo repetitionInfo) throws Exception {
-        OneWayEncryption owe = new SHA3384();
-        encryptWithSaltTest(owe, repetitionInfo);
+    @Test
+    @DisplayName("SHA3384 password encode 테스트")
+    void passwordEncrypt() {
+        passwordEncryptAndMatchesTest(new SHA3384());
     }
 }
