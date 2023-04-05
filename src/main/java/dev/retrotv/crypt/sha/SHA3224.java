@@ -4,15 +4,15 @@ import dev.retrotv.crypt.Algorithm;
 import dev.retrotv.crypt.Encode;
 import dev.retrotv.crypt.owe.Checksum;
 import dev.retrotv.crypt.owe.Encrypt;
-import dev.retrotv.crypt.owe.Password;
+import dev.retrotv.crypt.owe.PasswordWithSalt;
 
 import java.nio.charset.StandardCharsets;
 
-public class SHA3224 extends Encrypt implements Checksum, Password {
+public class SHA3224 extends Encrypt implements Checksum, PasswordWithSalt {
 
     @Override
     public String encode(byte[] data) {
-        return Encode.binaryToHex(encrypt(Algorithm.SHA3224, data));
+        return Encode.binaryToHex(encode(Algorithm.SHA3224, data));
     }
 
     @Override
