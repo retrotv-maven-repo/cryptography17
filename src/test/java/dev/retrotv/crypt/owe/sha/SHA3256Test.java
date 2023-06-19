@@ -1,6 +1,6 @@
 package dev.retrotv.crypt.owe.sha;
 
-import dev.retrotv.crypt.Algorithm;
+import dev.retrotv.enums.Algorithm;
 import dev.retrotv.crypt.owe.OWETest;
 import dev.retrotv.crypt.sha.SHA3256;
 import org.junit.jupiter.api.DisplayName;
