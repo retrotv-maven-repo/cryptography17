@@ -1,7 +1,7 @@
 package dev.retrotv.crypt.owe;
 
 import dev.retrotv.common.Log;
-import dev.retrotv.crypt.Algorithm;
+import dev.retrotv.enums.Algorithm;
 import dev.retrotv.crypt.sha.*;
 import org.json.JSONObject;
 
