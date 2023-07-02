@@ -80,22 +80,22 @@ public class OWETest extends Log {
         switch (algorithm) {
             case SHA3224 -> {
                 Checksum checksum = new SHA3224();
-                return checksum.encode(fileData);
+                return checksum.hash(fileData);
             }
 
             case SHA3256 -> {
                 Checksum checksum = new SHA3256();
-                return checksum.encode(fileData);
+                return checksum.hash(fileData);
             }
 
             case SHA3384 -> {
                 Checksum checksum = new SHA3384();
-                return checksum.encode(fileData);
+                return checksum.hash(fileData);
             }
 
             case SHA3512 -> {
                 Checksum checksum = new SHA3512();
-                return checksum.encode(fileData);
+                return checksum.hash(fileData);
             }
 
             default -> {
