@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    api 'com.github.retrotv-maven-repo:cryptography:0.7.0-alpha'
+    api 'com.github.retrotv-maven-repo:cryptography:0.8.0-alpha'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
     compileOnly 'org.projectlombok:lombok:1.18.28'
 
