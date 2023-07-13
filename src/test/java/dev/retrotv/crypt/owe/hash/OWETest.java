@@ -1,8 +1,13 @@
-package dev.retrotv.crypt.owe;
+package dev.retrotv.crypt.owe.hash;
 
 import dev.retrotv.common.Log;
-import dev.retrotv.enums.Algorithm;
-import dev.retrotv.crypt.sha.*;
+import dev.retrotv.crypt.owe.Checksum;
+import dev.retrotv.crypt.owe.Password;
+import dev.retrotv.crypt.owe.hash.sha.SHA3224;
+import dev.retrotv.crypt.owe.hash.sha.SHA3256;
+import dev.retrotv.crypt.owe.hash.sha.SHA3384;
+import dev.retrotv.crypt.owe.hash.sha.SHA3512;
+import dev.retrotv.enums.HashAlgorithm;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -12,6 +17,7 @@ import java.nio.file.Files;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static dev.retrotv.enums.HashAlgorithm.*;
 
 public class OWETest extends Log {
     protected final String PASSWORD = "The quick brown fox jumps over the lazy dog";
@@ -19,7 +25,7 @@ public class OWETest extends Log {
     protected final URL RESOURCE = this.getClass().getClassLoader().getResource("checksum_test_file.txt");
     protected final URL RESOURCE2 = this.getClass().getClassLoader().getResource("checksum_test_file2.txt");
 
-    protected void fileHashTest(Algorithm algorithm) throws IOException {
+    protected void fileHashTest(HashAlgorithm algorithm) throws IOException {
         File file;
         byte[] fileData;
 
@@ -39,7 +45,7 @@ public class OWETest extends Log {
         assertEquals(getHash(algorithm), hash(algorithm, fileData));
     }
 
-    protected void fileHashMatchesTest(Checksum checksum, Algorithm algorithm) throws IOException {
+    protected void fileHashMatchesTest(Checksum checksum, HashAlgorithm algorithm) throws IOException {
         File file;
         byte[] fileData;
 
@@ -76,7 +82,7 @@ public class OWETest extends Log {
         assertTrue(password.matches(PASSWORD, encryptedPassword));
     }
 
-    private String hash(Algorithm algorithm, byte[] fileData) {
+    private String hash(HashAlgorithm algorithm, byte[] fileData) {
         switch (algorithm) {
             case SHA3224 -> {
                 Checksum checksum = new SHA3224();
@@ -104,15 +110,15 @@ public class OWETest extends Log {
         }
     }
 
-    private String getHash(Algorithm algorithm) throws IOException {
+    private String getHash(HashAlgorithm algorithm) throws IOException {
         JSONObject jsonObject = new JSONObject(readJson());
         JSONObject file1 = jsonObject.getJSONObject("checksum_test_file");
 
         return switch (algorithm) {
-            case SHA3224 -> file1.getString(Algorithm.SHA3224.label());
-            case SHA3256 -> file1.getString(Algorithm.SHA3256.label());
-            case SHA3384 -> file1.getString(Algorithm.SHA3384.label());
-            case SHA3512 -> file1.getString(Algorithm.SHA3512.label());
+            case SHA3224 -> file1.getString(SHA3224.label());
+            case SHA3256 -> file1.getString(SHA3256.label());
+            case SHA3384 -> file1.getString(SHA3384.label());
+            case SHA3512 -> file1.getString(SHA3512.label());
             default -> null;
         };
     }
