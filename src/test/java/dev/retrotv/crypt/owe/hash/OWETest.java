@@ -1,14 +1,13 @@
 package dev.retrotv.crypt.owe.hash;
 
 import dev.retrotv.common.Log;
-import dev.retrotv.crypt.owe.Checksum;
-import dev.retrotv.crypt.owe.Password;
 import dev.retrotv.crypt.owe.hash.sha.SHA3224;
 import dev.retrotv.crypt.owe.hash.sha.SHA3256;
 import dev.retrotv.crypt.owe.hash.sha.SHA3384;
 import dev.retrotv.crypt.owe.hash.sha.SHA3512;
 import dev.retrotv.enums.HashAlgorithm;
 import org.json.JSONObject;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -73,7 +72,7 @@ public class OWETest extends Log {
         }
     }
 
-    protected void passwordEncryptAndMatchesTest(Password password) {
+    protected void passwordEncryptAndMatchesTest(PasswordEncoder password) {
         String encryptedPassword = password.encode(PASSWORD);
 
         log.info(encryptedPassword);
