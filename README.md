@@ -8,20 +8,16 @@ JDK 17 이상
 
 ## 지원하는 알고리즘
 
-### KDF(Key Derivation Function) 계열
+### KDF(키 유도 함수) 계열
 - Argon2
 - BCrypt
 - Pbkdf2
 - SCrypt
 
-### CRC 계열
+### Hash(해시) 계열
 - CRC-32
-
-### MD 계열
 - MD2
 - MD5
-
-### SHA 계열
 - SHA-1
 - SHA-224
 - SHA-256
@@ -34,10 +30,43 @@ JDK 17 이상
 - SHA3-384
 - SHA3-512
 
-### AES 계열
-- AES-128 (ECB PKCS5 Padding)
-- AES-128 (CBC PKCS5 Padding)
-- AES-192 (ECB PKCS5 Padding)
-- AES-192 (CBC PKCS5 Padding)
-- AES-256 (ECB PKCS5 Padding)
-- AES-256 (CBC PKCS5 Padding)
+### AES 알고리즘
+- AES-128 (ECB, CBC, CFB, OFB, CRT, CTS, GCM)
+- AES-192 (ECB, CBC, CFB, OFB, CRT, CTS, GCM)
+- AES-256 (ECB, CBC, CFB, OFB, CRT, CTS, GCM)
+#### ECB, CBC 모드는 PKCS#5 Padding을 기본으로 사용
+
+### LEA 알고리즘
+- LEA-128 (ECB, CBC, CCM, CFB, OFB, CRT, GCM)
+- LEA-192 (ECB, CBC, CCM, CFB, OFB, CRT, GCM)
+- LEA-256 (ECB, CBC, CCM, CFB, OFB, CRT, GCM)
+#### ECB, CBC 모드는 PKCS#5 Padding을 기본으로 사용
+
+### RSA 계열
+- RSA-1024 (OAEPWITHSHA-256ANDMGF1PADDING, SHA256withRSA)
+- RSA-2048 (OAEPWITHSHA-256ANDMGF1PADDING, SHA256withRSA)
+
+## 사용법
+```
+// 해시 (체크섬)
+Hash checksum = new SHA256();
+checksum.hash(new File(filePath));
+
+// 해시 (패스워드 + 소금 암호화)
+Hash password = new SHA256();
+password.encode(myPassword, salt);
+
+// 키 유도 함수 (패스워드 암호화)
+Password password = new BCrypt();
+password.encode(myPassword);
+
+// 양방향 암호화 (암/복호화)
+TwoWayEncryption twe = new AESCBC(128);
+byte[] encryptedData = twe.encrypt(data, key, iv);
+byte[] originalData = twe.decrypt(encryptedData, key, iv);
+
+// 양방향 암호화 (전자서명)
+DigitalSignature ds = new RSA2048();
+byte[] encryptedData = ds.sign(data, privateKey);
+boolean verifyResult = ds.verify(encryptedData, publicKey);
+```
