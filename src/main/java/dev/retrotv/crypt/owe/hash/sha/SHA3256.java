@@ -1,6 +1,6 @@
 package dev.retrotv.crypt.owe.hash.sha;
 
-import dev.retrotv.crypt.owe.hash.Hash;
+import dev.retrotv.crypto.owe.hash.Hash;
 import dev.retrotv.utils.EncodeUtil;
 import dev.retrotv.utils.MessageDigestEncodeUtil;
 import lombok.NonNull;
