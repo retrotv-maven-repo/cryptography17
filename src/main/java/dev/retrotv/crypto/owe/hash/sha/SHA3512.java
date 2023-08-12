@@ -1,4 +1,4 @@
-package dev.retrotv.crypt.owe.hash.sha;
+package dev.retrotv.crypto.owe.hash.sha;
 
 import dev.retrotv.crypto.owe.hash.Hash;
 import dev.retrotv.utils.EncodeUtil;

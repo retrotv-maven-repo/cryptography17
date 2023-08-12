@@ -1,10 +1,10 @@
-package dev.retrotv.crypt.owe.hash;
+package dev.retrotv.crypto.owe.hash;
 
 import dev.retrotv.common.Log;
-import dev.retrotv.crypt.owe.hash.sha.SHA3224;
-import dev.retrotv.crypt.owe.hash.sha.SHA3256;
-import dev.retrotv.crypt.owe.hash.sha.SHA3384;
-import dev.retrotv.crypt.owe.hash.sha.SHA3512;
+import dev.retrotv.crypto.owe.hash.sha.SHA3224;
+import dev.retrotv.crypto.owe.hash.sha.SHA3256;
+import dev.retrotv.crypto.owe.hash.sha.SHA3384;
+import dev.retrotv.crypto.owe.hash.sha.SHA3512;
 import dev.retrotv.enums.HashAlgorithm;
 import org.json.JSONObject;
 import org.springframework.security.crypto.password.PasswordEncoder;
