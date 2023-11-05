@@ -5,8 +5,8 @@ plugins {
     id("org.jetbrains.dokka") version "1.9.10"
 }
 
-group "dev.retrotv"
-version "0.17.0-alpha"
+group = "dev.retrotv"
+version = "0.17.0-alpha"
 
 // Github Action 버전 출력용
 tasks.register("printVersionName") {
