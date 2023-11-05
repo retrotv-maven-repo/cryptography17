@@ -5,8 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static dev.retrotv.enums.HashAlgorithm.*;
-
-public class SHA3256Test extends OWETest {
+ class SHA3256Test extends OWETest {
 
     @Test
     @DisplayName("SHA3256 File hash 테스트")

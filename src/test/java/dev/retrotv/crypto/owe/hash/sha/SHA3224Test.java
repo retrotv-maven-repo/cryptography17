@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static dev.retrotv.enums.HashAlgorithm.*;
 
-public class SHA3224Test extends OWETest {
+class SHA3224Test extends OWETest {
 
     @Test
     @DisplayName("SHA3224 File hash 테스트")
