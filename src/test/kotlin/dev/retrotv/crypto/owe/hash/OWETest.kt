@@ -17,6 +17,7 @@ open class OWETest : Log() {
     protected val CHECKSUM = this.javaClass.getClassLoader().getResource("checksum")
     protected val RESOURCE = this.javaClass.getClassLoader().getResource("checksum_test_file.txt")
     protected val RESOURCE2 = this.javaClass.getClassLoader().getResource("checksum_test_file2.txt")
+
     @Throws(IOException::class)
     protected fun fileHashTest(algorithm: HashAlgorithm) {
         var fileData: ByteArray
