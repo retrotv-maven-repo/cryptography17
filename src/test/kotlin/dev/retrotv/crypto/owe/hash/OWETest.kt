@@ -57,7 +57,7 @@ open class OWETest : Log() {
     }
 
     @Throws(IOException::class)
-    protected fun fileMatchesTest(checksum: Checksum) {
+    protected fun fileMatchesTest(checksum: FileChecksum) {
         if (RESOURCE != null && RESOURCE2 != null) {
             Assertions.assertTrue(checksum.matches(File(RESOURCE.file), File(RESOURCE2.file)))
         } else {
