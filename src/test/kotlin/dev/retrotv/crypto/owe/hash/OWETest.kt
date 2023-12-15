@@ -38,7 +38,7 @@ open class OWETest : Log() {
     }
 
     @Throws(IOException::class)
-    protected fun fileHashMatchesTest(checksum: Checksum, algorithm: HashAlgorithm) {
+    protected fun fileHashMatchesTest(checksum: Hash, algorithm: HashAlgorithm) {
         var fileData: ByteArray
         val file: File = try {
             File(Objects.requireNonNull<URL?>(RESOURCE).toURI())
@@ -57,7 +57,7 @@ open class OWETest : Log() {
     }
 
     @Throws(IOException::class)
-    protected fun fileMatchesTest(checksum: FileChecksum) {
+    protected fun fileMatchesTest(checksum: FileHash) {
         if (RESOURCE != null && RESOURCE2 != null) {
             Assertions.assertTrue(checksum.matches(File(RESOURCE.file), File(RESOURCE2.file)))
         } else {
@@ -75,22 +75,22 @@ open class OWETest : Log() {
     private fun hash(algorithm: HashAlgorithm, fileData: ByteArray): String? {
         return when (algorithm) {
             HashAlgorithm.SHA3224 -> {
-                val checksum: Checksum = SHA3224()
+                val checksum: Hash = SHA3224()
                 checksum.hash(fileData)
             }
 
             HashAlgorithm.SHA3256 -> {
-                val checksum: Checksum = SHA3256()
+                val checksum: Hash = SHA3256()
                 checksum.hash(fileData)
             }
 
             HashAlgorithm.SHA3384 -> {
-                val checksum: Checksum = SHA3384()
+                val checksum: Hash = SHA3384()
                 checksum.hash(fileData)
             }
 
             HashAlgorithm.SHA3512 -> {
-                val checksum: Checksum = SHA3512()
+                val checksum: Hash = SHA3512()
                 checksum.hash(fileData)
             }
 
