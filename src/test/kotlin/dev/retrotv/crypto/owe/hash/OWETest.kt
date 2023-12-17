@@ -2,7 +2,7 @@ package dev.retrotv.crypto.owe.hash
 
 import dev.retrotv.common.Log
 import dev.retrotv.crypto.owe.hash.sha.*
-import dev.retrotv.enums.HashAlgorithm
+import dev.retrotv.enums.Algorithm
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -19,7 +19,7 @@ open class OWETest : Log() {
     protected val RESOURCE2 = this.javaClass.getClassLoader().getResource("checksum_test_file2.txt")
 
     @Throws(IOException::class)
-    protected fun fileHashTest(algorithm: HashAlgorithm) {
+    protected fun fileHashTest(algorithm: Algorithm.Hash) {
         var fileData: ByteArray
         val file: File = try {
             File(Objects.requireNonNull<URL?>(RESOURCE).toURI())
@@ -38,7 +38,7 @@ open class OWETest : Log() {
     }
 
     @Throws(IOException::class)
-    protected fun fileHashMatchesTest(checksum: Hash, algorithm: HashAlgorithm) {
+    protected fun fileHashMatchesTest(checksum: Hash, algorithm: Algorithm.Hash) {
         var fileData: ByteArray
         val file: File = try {
             File(Objects.requireNonNull<URL?>(RESOURCE).toURI())
@@ -72,24 +72,24 @@ open class OWETest : Log() {
         Assertions.assertTrue(password.matches(PASSWORD, encryptedPassword))
     }
 
-    private fun hash(algorithm: HashAlgorithm, fileData: ByteArray): String? {
+    private fun hash(algorithm: Algorithm.Hash, fileData: ByteArray): String? {
         return when (algorithm) {
-            HashAlgorithm.SHA3224 -> {
+            Algorithm.Hash.SHA3224 -> {
                 val checksum: Hash = SHA3224()
                 checksum.hash(fileData)
             }
 
-            HashAlgorithm.SHA3256 -> {
+            Algorithm.Hash.SHA3256 -> {
                 val checksum: Hash = SHA3256()
                 checksum.hash(fileData)
             }
 
-            HashAlgorithm.SHA3384 -> {
+            Algorithm.Hash.SHA3384 -> {
                 val checksum: Hash = SHA3384()
                 checksum.hash(fileData)
             }
 
-            HashAlgorithm.SHA3512 -> {
+            Algorithm.Hash.SHA3512 -> {
                 val checksum: Hash = SHA3512()
                 checksum.hash(fileData)
             }
@@ -101,14 +101,14 @@ open class OWETest : Log() {
     }
 
     @Throws(IOException::class)
-    private fun getHash(algorithm: HashAlgorithm): String {
+    private fun getHash(algorithm: Algorithm.Hash): String {
         val jsonObject = JSONObject(readJson())
         val file1 = jsonObject.getJSONObject("checksum_test_file")
         return when (algorithm) {
-            HashAlgorithm.SHA3224 -> file1.getString(HashAlgorithm.SHA3224.label())
-            HashAlgorithm.SHA3256 -> file1.getString(HashAlgorithm.SHA3256.label())
-            HashAlgorithm.SHA3384 -> file1.getString(HashAlgorithm.SHA3384.label())
-            HashAlgorithm.SHA3512 -> file1.getString(HashAlgorithm.SHA3512.label())
+            Algorithm.Hash.SHA3224 -> file1.getString(Algorithm.Hash.SHA3224.label())
+            Algorithm.Hash.SHA3256 -> file1.getString(Algorithm.Hash.SHA3256.label())
+            Algorithm.Hash.SHA3384 -> file1.getString(Algorithm.Hash.SHA3384.label())
+            Algorithm.Hash.SHA3512 -> file1.getString(Algorithm.Hash.SHA3512.label())
             else -> ""
         }
     }

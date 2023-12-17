@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    api("com.github.retrotv-maven-repo:cryptography:0.20.0-alpha")
+    api("com.github.retrotv-maven-repo:cryptography:0.21.0-alpha")
     implementation("com.github.retrotv-maven-repo:data-utils:0.13.1-alpha")
     implementation("org.apache.logging.log4j:log4j-core:2.20.0")
 
