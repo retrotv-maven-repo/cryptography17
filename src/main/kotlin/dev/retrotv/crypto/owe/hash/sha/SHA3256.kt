@@ -4,7 +4,7 @@ import dev.retrotv.crypto.owe.hash.HashAlgorithm
 import dev.retrotv.data.enums.EncodeFormat
 import dev.retrotv.data.utils.binaryEncode
 import dev.retrotv.data.utils.binaryToHex
-import dev.retrotv.enums.HashAlgorithm.SHA3256
+import dev.retrotv.enums.Algorithm.Hash.SHA3256
 import dev.retrotv.utils.encode
 
 class SHA3256 : HashAlgorithm() {
