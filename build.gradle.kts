@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dev.retrotv"
-version = "0.22.0-alpha"
+version = "0.23.0-alpha"
 
 // Github Action 버전 출력용
 tasks.register("printVersionName") {
@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-    api("com.github.retrotv-maven-repo:cryptography:0.22.0-alpha")
-    implementation("com.github.retrotv-maven-repo:data-utils:0.13.3-alpha")
+    api("com.github.retrotv-maven-repo:cryptography:0.23.0-alpha")
+    implementation("com.github.retrotv-maven-repo:data-utils:0.14.0-alpha")
     implementation("org.apache.logging.log4j:log4j-core:2.20.0")
 
     testImplementation("org.json:json:20231013")
