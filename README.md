@@ -1,4 +1,6 @@
-# !!! 이 리포지토리는 https://github.com/retrotv-maven-repo/cryptography로 통합되었습니다. !!!
+# !!! WARNING !!!
+# 이 리포지토리는 https://github.com/retrotv-maven-repo/cryptography로 통합되었습니다.
+# 이 리포지토리는 더 이상 업데이트 되지 않습니다!!!
 
 # Cryptography17
 [![](https://jitpack.io/v/retrotv-maven-repo/cryptography17.svg)](https://jitpack.io/#retrotv-maven-repo/cryptography17)
